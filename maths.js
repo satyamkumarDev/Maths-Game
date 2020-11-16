@@ -1,6 +1,8 @@
 var playing=false;
 var score;
 var timeremaining;
+var correctres;
+var correctposition;
 document.getElementById("startreset").onclick=function(){
 if(playing==true){
 location.reload()
@@ -15,6 +17,32 @@ location.reload()
     hide("gameover")
     document.getElementById("startreset").innerHTML= "Reset Game"
     startCountDown()
+    generateQA()
+}
+}
+
+for(i=1;i<5;i++){
+    document.getElementById("box"+i).onclick=function(){
+        if(playing==true){
+            if(this.innerHTML==correctres){
+                score++
+                document.getElementById("scorevalue").innerHTML=score
+                hide("wrong")
+                show("correct")
+                setTimeout(function(){
+                    hide("correct")
+                },1000)
+                generateQA()
+            }else{
+                hide("correct")
+                show("wrong")
+                setTimeout(function(){
+                    hide("wrong");
+                },1000)
+            }
+        }
+    }
+
 }
 
 // start counter
@@ -54,7 +82,28 @@ function show(Id){
 
 // generate question and mutiple answer
 function generateQA(){
+var val1=1+Math.round(9*Math.random())
+var val2=1+Math.round(9*Math.random())
+ correctres=val1 * val2
+ document.getElementById("question").innerHTML=val1 + "X" + val2;   
+ correctposition=1+Math.round(3*Math.random())
+document.getElementById("box"+correctposition).innerHTML=correctres
+
+// fill other boxes with wrong answer
+var options=[correctres];
+for(i=1;i<5;i++){
+    if(i!== correctposition){
+        var wrongoptions ;
+        do{
+            wrongoptions=(1+Math.round(9*Math.random()))*(1+Math.round(9*Math.random()))
+       
+        }while(options.indexOf(wrongoptions)>-1)
+        document.getElementById("box"+i).innerHTML=wrongoptions
+        options.push(wrongoptions)
+    }
 
 }
+
 }
+
 
